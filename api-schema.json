@@ -1,6 +1,37 @@
 {
   "tools": [
     {
+      "name": "query_data_warehouse",
+      "description": "查询企业数仓数据。\n\n## 数仓目录\n- DataId=1056：[运营] 流向明细（字段级明细）\n- DataId=1058：[运营] 发货明细（字段级明细）\n\n## 1056/1058 通用字段说明\n- 终端名称：客户/医院名称\n- 终端属性：如 三甲医院、二级医院、连锁药店\n- 商品名称：药品/产品名\n- 规格：药品规格\n- 生产企业：药企名称\n- 单据日期：格式 YYYY-MM-DD\n- 数量：销售数量\n- 金额：含税金额（元）\n- 事业部：如 肿瘤、心血管、普药\n- 大区/省区：销售区域\n\n## 规则\n- 明细查询 TopRows 默认 1000，汇总查询 TopRows 默认 0\n- 用户明确要“前 N 名”时，TopRows 设为 N\n- Where 使用标准 SQL 条件，例如：\n  - 终端属性='三甲医院'\n  - 单据日期>='2025-01-01' AND 单据日期<='2025-03-31'\n  - 事业部 IN ('肿瘤','心血管')\n- Select 可写具体字段或用聚合函数，例如：\n  - 终端名称,商品名称,SUM(金额) AS 销售额\n- GroupBy 通常用于汇总，例如：\n  - 终端名称\n  - 商品名称\n- OrderBy 用于排序，例如：\n  - 金额 DESC\n  - 数量 DESC\n\n## 示例\n用户问：\"最近一个月三甲医院销售额前10的商品\"\n→ DataId=1056, TopRows=10, Where=\"终端属性='三甲医院' AND 单据日期>='2025-06-01'\", Select=\"商品名称,SUM(金额) AS 销售额\", GroupBy=\"商品名称\", OrderBy=\"销售额 DESC\"",
+      "endpoint": "POST /Service/invoke?id=-1&name=MSSQLDATAAIXX50",
+      "parameters": {
+        "DataId": {
+          "type": "integer",
+          "description": "数仓表ID：1056=流向明细，1058=发货明细"
+        },
+        "TopRows": {
+          "type": "integer",
+          "description": "返回记录条数。明细查询默认1000，汇总查询默认0，用户明确要前N名时传N"
+        },
+        "Where": {
+          "type": "string",
+          "description": "SQL WHERE条件，标准SQL语法。示例：终端属性='三甲医院' AND 单据日期>='2025-01-01'"
+        },
+        "Select": {
+          "type": "string",
+          "description": "SELECT字段列表，可包含聚合函数。示例：终端名称,商品名称,SUM(金额) AS 销售额"
+        },
+        "GroupBy": {
+          "type": "string",
+          "description": "GROUP BY字段列表，用于汇总统计。示例：终端名称 或 商品名称"
+        },
+        "OrderBy": {
+          "type": "string",
+          "description": "ORDER BY排序规则。示例：金额 DESC 或 数量 DESC"
+        }
+      }
+    },    
+    {
       "name": "search_posts",
       "description": "Search blog posts by keyword. Returns title, summary, category, tags, and author.",
       "endpoint": "GET /api/posts",
