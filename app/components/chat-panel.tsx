@@ -214,7 +214,7 @@ export default function ChatPanel({ mode = 'full' }: { mode?: 'full' | 'widget' 
                 </linearGradient>
               </defs>
             </svg>
-            <span className="text-sm font-semibold text-gray-900">{isZh ? 'AI 助手' : config.name}</span>
+            <span className="text-sm font-semibold text-gray-900">{isZh ? config.name : config.name}</span>
           </div>
         </div>
         <div className="flex items-center gap-1.5">
@@ -274,11 +274,11 @@ export default function ChatPanel({ mode = 'full' }: { mode?: 'full' | 'widget' 
               </svg>
             </div>
             <h3 className="text-lg font-semibold text-gray-900 mb-2">
-              {isZh ? '你好，我是 ' : 'Hey, This is '}<span className="bg-gradient-to-r from-indigo-500 via-pink-400 to-amber-400 bg-clip-text text-transparent">{isZh ? 'AI 助手' : config.name}</span>
+              {isZh ? '你好，我是 ' : 'Hey, This is '}<span className="bg-gradient-to-r from-indigo-500 via-pink-400 to-amber-400 bg-clip-text text-transparent">{isZh ? config.name : config.name}</span>
             </h3>
             <p className="text-xs text-gray-400 mb-4 max-w-[320px] leading-relaxed">
               {isZh
-                ? '可嵌入任何网站的 AI 助手，一行代码添加聊天 Widget，自动理解页面内容，支持实时查询后端 API。'
+                ? config.welcome
                 : 'Embeddable AI assistant for any website. One line of code to add a chat widget that understands page content and queries your backend APIs.'}
             </p>
 
